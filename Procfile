@@ -1,1 +1,1 @@
-web: python manage.py run 5000
+web gunicorn manage:app
