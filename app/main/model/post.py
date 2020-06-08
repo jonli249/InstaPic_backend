@@ -3,16 +3,15 @@ import datetime
 from app.main.model.blacklist import BlacklistToken
 from ..config import key
 import jwt
-from user import User
 
 class Post(db.Model):
     """ Pics Model for storing Instapic posts with image and description """
     __tablename__ = "posts"
 
     #Post ID
-    id = db.Column(id = db.Column(db.Integer, primary_key=True, autoincrement=True) 
-    user = db.relationship('User',foreign_keys=user_id,lazy='select')
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     user_id = db.Column(db.Integer,db.ForeignKey('user.id'))
+    user = db.relationship('User',foreign_keys=user_id,lazy='select')
     #Image Details 
     image = db.Column(db.String())
     #caption = db.Column(db.String(2200)) #2200 - same as Instagram

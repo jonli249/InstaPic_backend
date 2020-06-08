@@ -1,7 +1,7 @@
 from flask import request
 from flask_restplus import Resource
 
-from app.main.util.decorator import admin_token_required
+from app.main.util.decorator import admin_token_required,token_required
 from ..util.dto import PostDto
 from ..service.post_service import get_all_posts, get_posts_paginated, post_new_post,delete_post
 

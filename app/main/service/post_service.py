@@ -4,7 +4,7 @@ import io
 import base64
 
 from app.main import db
-from app.main.model.post import Posts
+from app.main.model.post import Post
 
 from flask import jsonify
 from sqlalchemy import desc, asc 
