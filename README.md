@@ -1,4 +1,4 @@
-#### FLASK RESTFUL API BOILER-PLATE WITH JWT
+#### Instapic Backend (Flask RESTful API ) - Reap Coding Challenge 
 
 ### Terminal commands
 
@@ -28,12 +28,10 @@
     user by public_id requires just a regular authentication.
 
 ### Full description and guide ###
-https://medium.freecodecamp.org/structuring-a-flask-restplus-web-service-for-production-builds-c2ec676de563
 
 
-### Contributing
-If you want to contribute to this flask restplus boilerplate, clone the repository and just start making pull requests.
-
+### Resources
+Used following resource as boilerplate for the API
 ```
 https://github.com/cosmic-byte/flask-restplus-boilerplate.git
 ```

@@ -38,14 +38,15 @@ def get_all_posts():
     #reformat this
     return list(map(format_username_posts,posts)) 
 
-def get_posts_paginated(page,max_per_page):
-    posts = Post.query.order_by(desc(Post.posted_on)).paginate(page,max_per_page,False).items
+######
+def get_posts_paginated(max_posts,page):
+    posts = Post.query.order_by(desc(Post.posted_on)).paginate(page,max_posts,False).items
     return list(map(format_username_posts,posts)) 
 
 
 def format_username_posts(post):
     #Accounts for contigency where username is not displayed correct
-    post.username = post.user.username:
+    post.username = post.user.username
     return post
 
 def save_changes(data):

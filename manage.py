@@ -4,14 +4,11 @@ import unittest
 from flask_migrate import Migrate, MigrateCommand
 from flask_script import Manager
 
-from app import blueprint
-from app.main import create_app, db
+from app import app
+from app.main import db
 from app.main.model import user, blacklist
 
-app = create_app(os.getenv('BOILERPLATE_ENV') or 'dev')
-app.register_blueprint(blueprint)
-
-app.app_context().push()
+from populate_db import populate
 
 manager = Manager(app)
 
@@ -22,17 +19,31 @@ manager.add_command('db', MigrateCommand)
 
 @manager.command
 def run():
-    app.run()
+    app.run(host='0.0.0.0', port=5000)
 
 
 @manager.command
-def test():
+def test(test_name=None):
     """Runs the unit tests."""
-    tests = unittest.TestLoader().discover('app/test', pattern='test*.py')
+    if test_name is None:
+        tests = unittest.TestLoader().discover('app/test', pattern='test*.py')
+    else: 
+        tests = unittest.TestLoader().loadTestsFromName('app.test.' + test_name)
+
     result = unittest.TextTestRunner(verbosity=2).run(tests)
     if result.wasSuccessful():
         return 0
     return 1
+
+@manager.command
+def populate_db():
+    populate()
+
+@manager.command
+def clear_db():
+    db.drop_all()
+    db.create_all()
+    db.session.commit()
 
 if __name__ == '__main__':
     manager.run()

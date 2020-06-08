@@ -15,7 +15,8 @@ class Post(db.Model):
     user_id = db.Column(db.Integer,db.ForeignKey('user.id'))
     #Image Details 
     image = db.Column(db.String())
-    caption = db.Column(db.String(2200)) #2200 - same as Instagram
+    #caption = db.Column(db.String(2200)) #2200 - same as Instagram
+    caption = db.Column(db.String(200)) 
     posted_on = db.Column(db.DateTime,nullable=False)
 
     def __repr__(self):
