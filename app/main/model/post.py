@@ -6,16 +6,13 @@ import jwt
 
 class Post(db.Model):
     """ Pics Model for storing Instapic posts with image and description """
-    __tablename__ = "posts"
+    __tablename__ = "post"
 
-    #Post ID
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    user_id = db.Column(db.Integer,db.ForeignKey('user.id'))
+    user_id = db.Column(db.Integer,db.ForeignKey('user.user_id'))
     user = db.relationship('User',foreign_keys=user_id,lazy='select')
-    #Image Details 
     image = db.Column(db.String())
-    #caption = db.Column(db.String(2200)) #2200 - same as Instagram
-    caption = db.Column(db.String(200)) 
+    caption = db.Column(db.String(2200)) #Same as Instagram 
     posted_on = db.Column(db.DateTime,nullable=False)
 
     def __repr__(self):

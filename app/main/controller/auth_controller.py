@@ -1,4 +1,4 @@
-from flask import request, redirect
+from flask import request
 from flask_restplus import Resource
 
 from app.main.service.auth_helper import Auth

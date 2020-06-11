@@ -14,7 +14,7 @@ def register_user(self):
         '/user/',
         data=json.dumps(dict(
             username='username',
-            password='123456'
+            password='123456789'
         )),
         content_type='application/json'
     )
@@ -25,7 +25,7 @@ def login_user(self):
         '/auth/login',
         data=json.dumps(dict(
             username='username',
-            password='123456'
+            password='12345689'
         )),
         content_type='application/json'
     )
@@ -44,7 +44,7 @@ class TestAuthBlueprint(BaseTestCase):
             self.assertEqual(response.status_code, 201)
 
     def test_registered_with_already_registered_user(self):
-        """ Test registration with already registered email"""
+        """ Test registration with already registered username"""
         register_user(self)
         with self.client:
             response = register_user(self)

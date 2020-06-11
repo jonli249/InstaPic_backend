@@ -10,7 +10,7 @@ class User(db.Model):
     """ User Model for storing user related details """
     __tablename__ = "user"
 
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    user_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     registered_on = db.Column(db.DateTime, nullable=False)
     username = db.Column(db.String(50), unique=True)
     password_hash = db.Column(db.String(100))

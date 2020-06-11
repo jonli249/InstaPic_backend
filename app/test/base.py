@@ -4,6 +4,8 @@ from flask_testing import TestCase
 from app.main import db
 from manage import app
 
+from app.main.model.user import User
+from app.main.model.post import Post
 
 class BaseTestCase(TestCase):
     """ Base Tests """
