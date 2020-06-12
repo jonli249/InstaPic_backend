@@ -41,60 +41,85 @@ def get_posts(self, jwt):
 
 
 class TestPostService(BaseTestCase):
+    
     def test_post_model(self):
-        file_data = base64.b64decode(image1)
-        new_post = Post(
-            image=file_data,
-            description='testpost',
-            user_id=1,
-            posted_on=datetime.datetime.utcnow()
-        )
-        self.assertEqual(repr(new_post), "<Post '{}'>".format(new_post.id))
-
-    def test_get_posts_without_auth(self):
+        """ Test for making new post """
         with self.client:
-            response = get_posts(self, '')
-            self.assertEqual(response.status_code, 401)
+            reg = register_user(self)
+            auth_data = json.loads(reg.data.decode())
+            token = auth_data['Authorization']
+            
+            testFile = BytesIO()
+            image = Image.open('/Users/jonathanli/Desktop/Projects/InstaPic/InstaPic_backend/app/test/test.png')            
+            testFile.name  = 'test.png'
 
-    def test_get_posts_with_auth(self):
+            post_data = dict(
+                image=testFile,
+                caption='Test Caption'
+            )
+            resp = make_post(token, post_data, self)
+            data = json.loads(resp.data)
+            self.assertTrue(data['status'] == 'success')
+            self.assertTrue(data['message'] == 'Success! Post Added to DB.')
+            self.assertTrue(resp.content_type == 'application/json')
+            self.assertEqual(resp.status_code, 201)
+            
+    def test_post_model_no_cap(self):
+        """ Test for making new post -no caption """
         with self.client:
-            resp_register = register_user(self)
-            data_register = json.loads(resp_register.data.decode())
-            self.assertTrue(data_register['status'] == 'success')
-            auth = data_register['Authorization']
-            response = get_posts(self, auth)
-            self.assertEqual(response.status_code, 200)
+            reg = register_user(self)
+            auth_data = json.loads(reg.data.decode())
+            token = auth_data['Authorization']
+            
+            testFile = BytesIO()
+            image = Image.open('/Users/jonathanli/Desktop/Projects/InstaPic/InstaPic_backend/app/test/test.png')            
+            testFile.name  = 'test.png'
 
-    def test_get_posts_by_page_with_auth(self):
+            post_data = dict(
+                image=testFile,
+            )
+            resp = make_post(token, post_data, self)
+            data = json.loads(resp.data)
+            self.assertTrue(data['message'] == 'The browser (or proxy) sent a request that this server could not understand.')
+            self.assertTrue(resp.content_type == 'application/json')
+            self.assertEqual(resp.status_code, 400)
+
+    def test_post_model_no_image(self):
+        """ Test for making new post -no image"""
         with self.client:
-            resp_register = register_user(self)
-            data_register = json.loads(resp_register.data.decode())
-            self.assertTrue(data_register['status'] == 'success')
-            auth = data_register['Authorization']
-            response = get_posts_by_page(self, auth)
-            self.assertEqual(response.status_code, 200)
+            reg = register_user(self)
+            auth_data = json.loads(reg.data.decode())
+            token = auth_data['Authorization']
+        
 
-    def test_create_post_without_auth(self):
+            post_data = dict(
+                caption='This post does not work - no caption'
+            )
+            resp = make_post(token, post_data, self)
+            data = json.loads(resp.data)
+            self.assertTrue(data['message'] == 'The browser (or proxy) sent a request that this server could not understand.')
+            self.assertTrue(resp.content_type == 'application/json')
+            self.assertEqual(resp.status_code, 400) 
+
+    def test_post_model_wrong_file(self):
+        """ Test for making new post -wrong file type """
         with self.client:
-            response = make_post(self, '')
-            self.assertEqual(response.status_code, 401)
+            reg = register_user(self)
+            auth_data = json.loads(reg.data.decode())
+            token = auth_data['Authorization']
+            
 
-    def test_create_post_with_auth(self):
-        with self.client:
-            resp_register = register_user(self)
-            data_register = json.loads(resp_register.data.decode())
-            self.assertTrue(data_register['status'] == 'success')
-            auth = data_register['Authorization']
-            resp_posts = get_posts(self, auth)
-            data_posts = json.loads(resp_posts.data.decode())
-            self.assertTrue(len(data_posts['data']) == 0)
-            response = make_post(self, auth)
-            data_response = json.loads(response.data.decode())
-            self.assertEqual(response.status_code, 200)
-            resp_posts = get_posts(self, auth)
-            data_posts = json.loads(resp_posts.data.decode())
-            # self.assertTrue(len(data_posts['data']) == 1)
+            post_data = dict(
+                image= (BytesIO(b'Wrong file type with pdf uh oh!'),'wrong_file.txt'),
+                caption =' Wrong file type'
+            )
+            resp = make_post(token, post_data, self)
+            data = json.loads(resp.data)
+            self.assertTrue(data['message'] == 'Use a valid file type')
+            self.assertTrue(resp.content_type == 'application/json')
+            self.assertEqual(resp.status_code, 400)
 
+    
     '''
     ##Irrelevant, Delete Features Not in Final Product
     def test_delete_post_without_auth(self):

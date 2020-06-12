@@ -9,7 +9,8 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 class Config:
     SECRET_KEY = os.getenv('SECRET_KEY', 'my_precious_secret_key')
     DEBUG = False
-    EXTENSIONS = {'jpg','jpeg','gif','png','svg'}
+    OS_STORE = os.path.join(basedir,'images')
+    
 
 
 class DevelopmentConfig(Config):
@@ -41,4 +42,4 @@ config_by_name = dict(
 )
 
 key = Config.SECRET_KEY
-file_ext = Config.EXTENSIONS
+os_store = Config.OS_STORE

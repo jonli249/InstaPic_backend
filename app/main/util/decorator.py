@@ -47,8 +47,10 @@ def accepted_files(f):
     @wraps(f)
     def decorated(*args, **kwargs):
 
+        accepted_files = {'jpg','jpeg','gif','png','svg'}
+
         file = request.files['image']
-        if not '.' in file.filename or not file.filename.rsplit('.', 1)[1].lower() in file_types:
+        if not '.' in file.filename or not file.filename.rsplit('.', 1)[1].lower() in accepted_files:
             response_object = {
                 'status': 'fail',
                 'message': 'Use a valid file type'

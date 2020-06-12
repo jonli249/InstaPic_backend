@@ -70,7 +70,6 @@ class Auth:
                     'data': {
                         'user_id': user.id,
                         'username': user.username,
-                        'admin': user.admin,
                         'registered_on': str(user.registered_on)
                     }
                 }

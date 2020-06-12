@@ -38,16 +38,17 @@ class PostList(Resource):
     @accepted_files
     @api.expect(PostDto.upload_parser, validate=True) 
     @api.response(200,'Uploaded post Successfully')
-    def post(self,user):
+    def post(self):
         """Uploads post """
         data = request.json
-        return post_new_post(data=data,user=user)
+        return post_new_post(request=request)
 
 
 @api.route('/<path:filename>')
 class Post(Resource):
     @api.doc('Gets the image')
     def get(self, file):
-        return send_from_directory(store, file)
+        os_store = os.path.join(basedir, 'images')
+        return send_from_directory(os_store, file)
 
 

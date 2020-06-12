@@ -2,6 +2,7 @@ import uuid
 import datetime
 import io 
 import base64
+import os
 
 from app.main import db
 from app.main.model.post import Post
@@ -12,6 +13,8 @@ from sqlalchemy import desc, asc
 
 from werkzeug.utils import secure_filename
 from uuid import uuid4
+
+from app.main.config import os_store    
 
 def post_new_post(request):
     auth_token = request.headers.get('Authorization')
@@ -86,11 +89,10 @@ def save_image(image):
     uid = uuid4().__str__()[:8]
     final_filname = f"{uid}-{file}"
 
-    os_store = os.path(basedir,'images')
     if not os.path.exists(os_store):
         os.makedirs(os_store)
     # Save the file
-    path = os.path.join(store, final_filname)
+    path = os.path.join(os_store, final_filname)
     image.save(path)
     return final_filname
 
