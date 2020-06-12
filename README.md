@@ -1,6 +1,6 @@
 #### Instapic Backend (Flask RESTful API ) - Reap Coding Challenge 
 
-### Production Link 
+### Production API Link 
 https://instapic-backend-jonli.herokuapp.com/
 
 ### Terminal commands
