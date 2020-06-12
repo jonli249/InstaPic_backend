@@ -3,7 +3,7 @@ from flask_restplus import Resource
 
 from app.main.util.decorator import admin_token_required,token_required,accepted_files
 from ..util.dto import PostDto
-from ..service.post_service import get_all_posts, get_posts_paginated, post_new_post,delete_post
+from ..service.post_service import get_all_posts, get_posts_paginated, post_new_post #,delete_post
 
 api = PostDto.api
 post_model = PostDto.post_upload

@@ -4,16 +4,19 @@ import datetime
 from app.main.model.blacklist import BlacklistToken
 from ..config import key
 import jwt
+from sqlalchemy.orm import relationship
 
 
 class User(db.Model):
     """ User Model for storing user related details """
     __tablename__ = "user"
 
-    user_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    public_id = db.Column(db.String(100),unique=True)
     registered_on = db.Column(db.DateTime, nullable=False)
     username = db.Column(db.String(50), unique=True)
     password_hash = db.Column(db.String(100))
+    posts = relationship('Post')
 
     @property
     def password(self):

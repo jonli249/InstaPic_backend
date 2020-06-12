@@ -6,7 +6,6 @@ class UserDto:
     user = api.model('user', {
         'username': fields.String(required=True, description='user username'),
         'password': fields.String(required=True, description='user password'),
-        'id' : fields.String(description='user ID')
     })
 
 
@@ -20,7 +19,7 @@ class AuthDto:
 class PostDto:
     api = Namespace('post', description='post related operations')
     post_upload = api.model('post_upload', {
-        'username': fields.String(required=True, description='owner of post'),
+        'post_owner': fields.String(required=True, description='owner of post'),
         'image': fields.String(required=True,description='Image URI for Post'),
         'caption': fields.String(required=True, description='Caption'),
         'posted_on': fields.DateTime(required=True,description='Posted on DateTime')

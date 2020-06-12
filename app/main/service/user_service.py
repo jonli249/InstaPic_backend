@@ -9,7 +9,7 @@ def save_new_user(data):
     user = User.query.filter_by(username=data['username']).first()
     if not user:
         new_user = User(
-            user_id=str(uuid.uuid4()),
+            public_id = str(uuid.uuid4()),
             username=data['username'],
             password=data['password'],
             registered_on=datetime.datetime.utcnow()
@@ -28,8 +28,8 @@ def get_all_users():
     return User.query.all()
 
 
-def get_a_user(public_id):
-    return User.query.filter_by(user_id=user_id).first()
+def get_a_user(username):
+    return User.query.filter_by(username=username).first()
 
 
 def generate_token(user):

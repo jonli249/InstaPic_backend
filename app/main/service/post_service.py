@@ -17,22 +17,23 @@ def post_new_post(request):
     auth_token = request.headers.get('Authorization')
     data = request.form
     if auth_token:
-        ret = User.decode_auth_token(auth_token)
+        resp = User.decode_auth_token(auth_token)
         if not isinstance(resp, str):
-            user = User.query.filter_by(id=ret).first()
+            user = User.query.filter_by(id=resp).first()
             image_url = save_image(request.files['image'])
             new_post = Post(
-                id=str(uuid.uuid4()),
-                caption=data['caption'],
-                user=user.username,
+                public_id=str(uuid.uuid4()),
+                post_owner=user.username,
                 image=image_url,
+                caption=data['caption'],
                 posted_on=datetime.datetime.utcnow(),
 
             )
             save_changes(new_post)
+
             response_object = {
                 'status': 'success',
-                'message': 'Successfully added post to db.'
+                'message': 'Success! Post Added to DB.'
             }
             return response_object, 201
         response_object = {
@@ -43,10 +44,11 @@ def post_new_post(request):
     else:
         response_object = {
             'status': 'fail',
-            'message': 'Provide a valid auth token.'
+            'message': 'Valid Auth Token Required'
         }
         return response_object, 401
 
+'''
 def delete_post(id,user_id):
     delPost = Post.query.filter_by(id=id,user_id=user_id).first_or_404(description="Post Not Found")
     db.session.delete(delPost)
@@ -59,6 +61,7 @@ def delete_post(id,user_id):
     }
 
     return response, 200
+'''
 
 def get_all_posts():
     posts = Post.query.order_by(desc(Post.posted_on)).all()
@@ -79,17 +82,17 @@ def format_username_posts(post):
 
 #######
 def save_image(image):
-    filename = secure_filename(image.filename) #secure filename 
-    unique_id = uuid4().__str__()[:8]
-    unique_filename = f"{unique_id}-{filename}"
+    file = secure_filename(image.filename) #Ensures secucre filename
+    uid = uuid4().__str__()[:8]
+    final_filname = f"{uid}-{file}"
 
     os_store = os.path(basedir,'images')
     if not os.path.exists(os_store):
         os.makedirs(os_store)
     # Save the file
-    path = os.path.join(os_store, unique_filename)
+    path = os.path.join(store, final_filname)
     image.save(path)
-    return unique_filename
+    return final_filname
 
 def save_changes(data):
     try:

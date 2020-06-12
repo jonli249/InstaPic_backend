@@ -14,7 +14,7 @@ def register_user(self):
         '/user/',
         data=json.dumps(dict(
             username='username',
-            password='123456789'
+            password='123456'
         )),
         content_type='application/json'
     )
@@ -25,7 +25,7 @@ def login_user(self):
         '/auth/login',
         data=json.dumps(dict(
             username='username',
-            password='12345689'
+            password='123456'
         )),
         content_type='application/json'
     )
@@ -84,7 +84,7 @@ class TestAuthBlueprint(BaseTestCase):
             data = json.loads(response.data.decode())
             self.assertTrue(data['status'] == 'fail')
             print(data['message'])
-            self.assertTrue(data['message'] == 'email or password does not match.')
+            self.assertTrue(data['message'] == 'username or password does not match.')
             self.assertTrue(response.content_type == 'application/json')
             self.assertEqual(response.status_code, 401)
 
